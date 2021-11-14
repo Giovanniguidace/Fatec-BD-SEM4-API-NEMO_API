@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+
+    <!-- Drop de changeset utilizando sql ao invés de xml  -->
+    <!-- PADRÃO PARA INCLUDES: YYYYMMDDHHMM_ACAO_ENTIDADE   -->
+    <include file="db/changelog/ddl_v2.sql" relativeToChangelogFile="false"/>
+    <!-- <include file="db/changelog/dml_v2.sql" relativeToChangelogFile="false"/> -->
+    <include file="db/changelog/user.sql" relativeToChangelogFile="false"/>
+    <include file="db/changelog/addGeomCandidate.sql" relativeToChangelogFile="false"/>
+    <include file="db/changelog/create_parameters_table.sql" relativeToChangelogFile="false"/>
+    <include file="db/changelog/create_searchCandidate.sql" relativeToChangelogFile="false"/>
+    <include file="db/changelog/cadastro_curriculo.sql" relativeToChangelogFile="false"/>
+    <include file="db/changelog/alter_cascade.sql" relativeToChangelogFile="false"/>
+    <include file="db/changelog/create_table_selection_process.sql" relativeToChangelogFile="false"/>
+    <include file="db/changelog/alter_job_opportunity_table.sql" relativeToChangelogFile="false"/>
+    <include file="db/changelog/triggers.sql" relativeToChangelogFile="false"/>
+    <!-- <include file="db/changelog/insert_selection_process.sql" relativeToChangelogFile="false"/> -->
+    <!-- INSERT DATA -->
+    <include file="db/changelog/candidate.sql" relativeToChangelogFile="false"/>
+    <include file="db/changelog/company.sql" relativeToChangelogFile="false"/>
+    <include file="db/changelog/institution.sql" relativeToChangelogFile="false"/>
+    <include file="db/changelog/course.sql" relativeToChangelogFile="false"/>
+    <include file="db/changelog/post.sql" relativeToChangelogFile="false"/>
+    <include file="db/changelog/skill.sql" relativeToChangelogFile="false"/>
+    <include file="db/changelog/job_opportunity.sql" relativeToChangelogFile="false"/>
+    <include file="db/changelog/jo_exp_req.sql" relativeToChangelogFile="false"/>
+    <include file="db/changelog/jo_skill_req.sql" relativeToChangelogFile="false"/>
+    <include file="db/changelog/jo_formation_req.sql" relativeToChangelogFile="false"/>
+    <include file="db/changelog/selection_process_status.sql" relativeToChangelogFile="false"/>
+    <include file="db/changelog/selection_process.sql" relativeToChangelogFile="false"/>
+    <include file="db/changelog/candidate_skill.sql" relativeToChangelogFile="false"/>
+    <include file="db/changelog/candidate_formation.sql" relativeToChangelogFile="false"/>
+    <include file="db/changelog/candidate_exp.sql" relativeToChangelogFile="false"/>
+    
+
+<!--    <include file="db/changelog/create_direction_tables.sql" relativeToChangelogFile="false"/>-->
+
+</databaseChangeLog>

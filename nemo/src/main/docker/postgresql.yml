@@ -1,0 +1,13 @@
+version: '2'
+services:
+  nemo-postgresql:
+    image: mdillon/postgis:latest
+    # volumes:
+    #     - ~/volumes/jhipster/Nimus/postgresql/:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=admin
+
+    ports:
+      - 5432:5432

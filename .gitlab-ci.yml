@@ -1,0 +1,41 @@
+image: docker:latest
+services:
+  - docker:dind
+
+variables:
+  DOCKER_DRIVER: overlay
+  SPRING_PROFILES_ACTIVE: gitlab-ci
+  REPOSITORY: pi-1sem-2021
+  NAME_PROJECT: nemo
+  REGISTRY: registry.gitlab.com/pi-1sem-2021
+  MAVEN_CLI_OPTS: "--batch-mode --errors --fail-at-end"
+  MAVEN_OPTS: "-Dhttps.protocols=TLSv1.2 -Dmaven.repo.local=.m2/pi-1sem-2021"
+  DOCKER_TLS_CERTDIR: ""
+
+stages:
+  - build
+  - test
+  - package
+  - deploy  
+
+before_script:
+  - echo "Iniciando Comandos CI/CD"
+
+
+maven-build:
+  image: maven:3-jdk-11
+  stage: build
+  script: "mvn -f nemo/pom.xml compile"
+  artifacts:
+    name: $NAME_PROJECT
+    paths:
+      - teste_nemo.jar
+
+
+maven-testes:
+  image: maven:3-jdk-11
+  stage: test 
+  before_script:
+  - echo "Iniciando Testes da Aplicação"
+  script: 
+    - 'mvn -f nemo/pom.xml $MAVEN_CLI_OPTS install'
