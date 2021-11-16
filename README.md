@@ -1,17 +1,16 @@
-<h3>4º Semestre:</h3>
-
-* <B>Projeto NEMO API - Grupo NEMO:</b>
 
 
-![minipic](https://gitlab.com/felipemessibraga/pi-1sem-2021/uploads/d3295be8d95140beb572615b52a02a87/Nemo_API__1_.png) 
+# Projeto Integrador 4º Semestre
+
+## :orange_book: <b>Desafio do PI 4º Semestre:</b>
 
 
-<b>Objetivo do API:</b>
+![image](https://user-images.githubusercontent.com/62898187/142062293-f462d9ce-3088-4753-9c9f-2638d8ace0e4.png) 
+
 
 A necessidade do cliente para esta API é a criação de um sistema escalável e rápido para o envio de currículos já filtrados de forma inteligente e de acordo com parâmetros que sejam passados por outras aplicações. Não é necessária a criação de uma interface de contato com usuário, apenas será trabalhado com um back-end, onde receberá dados de parâmetros de filtros de pessoas e retornará os currículos filtrados e no formato JSON. Deverá ser criada uma API para que as aplicações dos clientes possam realizar as requisições.
 
-<b>Objetivo do Projeto:</b>
-
+## <b>:dart: Objetivo da Aplicação Nemo API</b>
 O projeto Nemo visa ser uma solução simples, versátil, escalável e open source para pessoas e empresas que precisam de um sistema escalável, simples e versátil para fazer a gestão dos currículos de candidatos relacionando eles às vagas disponíveis pela empresa.
 
 Sem possuir uma interface(Front-End) o NEMO API possui a responsabilidade de receber dados, realizar a inserção em banco e retornar dados solicitados com os parâmetros no formato JSON.
@@ -20,17 +19,17 @@ Com o intuito de gastar um menor tempo na seleção de currículos, a aplicaçã
 
 Seria esta a arquitetura do projeto:
 
-![MVP_Architecture](https://gitlab.com/felipemessibraga/pi-1sem-2021/uploads/da23ece3ab6a514cc11ec02a9a0adea7/MVP_Architecture.png)
+![image](https://user-images.githubusercontent.com/62898187/142062827-03df10bb-ae53-4bd3-b04c-b5d17217046e.png)
 
 Este é o Design da aplicação:
 
-![MVP_System_Design](https://gitlab.com/felipemessibraga/pi-1sem-2021/uploads/6cbd2856fb40b82e08d19ecca5133ab5/MVP_System_Design.png)
+![image](https://user-images.githubusercontent.com/62898187/142063180-ad769686-80cf-4d34-99e7-d3ab35a419f4.png)
 
 O Diagrama de Banco de Dados do projeto:
 
 ![diagrama do banco de dados](https://gitlab.com/felipemessibraga/pi-1sem-2021/uploads/d4f43a9bca078511acc3a0f18e82192c/WhatsApp_Image_2021-04-18_at_23.14.01.jpeg)
 
-<b>Tecnologias Adotadas na Solução:</b>
+## <b>⚙️ Tecnologias Adotadas na Solução:</b>
 
 ![](https://gitlab.com/felipemessibraga/pi-1sem-2021/uploads/130e4d8da8a8daa4d9876b41e2568552/Design_sem_nome.png)
 
@@ -44,7 +43,7 @@ O Diagrama de Banco de Dados do projeto:
 
 As tecnologias foram escolhidas para complementar os estudos das matérias deste semestre, pois a linguagem utilizada pelos professores era Java utilizando Spring Boot.
 
-<b>Contribuições individuais/pessoais</b>
+## <b> :wrench: Contribuições individuais/pessoais</b>
 
 * Auxilio na criação de métodos GET, POST e DELETE para o envio e recebimento de dados vindo do Front-End para candidatos:
 
@@ -226,7 +225,7 @@ production:
 	 - dpl --provider=heroku --app=$HEROKU_APP_PRODUCTION --api-key=$HEROKU_API_KEY
 ```
 
-<b>Aprendizados Efetivos</b>
+## <b>🧠 Aprendizados Efetivos</b>
 
 * Aprendizado na utilização de framework Spring Boot para criação de projetos Java:
 
