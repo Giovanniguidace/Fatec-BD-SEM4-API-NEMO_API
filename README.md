@@ -49,109 +49,110 @@ As tecnologias foram escolhidas para complementar os estudos das matérias deste
 
 	*	Exemplos:
 ```java
-	//EXEMPLO DE GET PARA CANDIDATES
-	@GetMapping(value = "nemo/v1/candidate", produces = "application/json")
- public ResponseEntity<List<Candidate>> getCandidate(
-						 @RequestParam(required = false) String gender,
-						 @RequestParam(required = false) String country,
-						 @RequestParam(required = false) String city,
-						 @RequestParam(required = false) String zipCode,
-						 @RequestParam(required = false) String skill,
-						 @RequestParam(required = false) Double longitude,
-						 @RequestParam(required = false) Double latitude,
-						 @RequestParam(required = false) Double kilometers,
-						 @RequestParam(required = false) String availablePeriod,
-						 @RequestParam(required = false) String course,
-						 @RequestParam(required = false) String institution,
-						 @RequestParam(required = false) String workModality,
-						 @RequestParam(required = false) Double pretensionSalary,
-						 @RequestParam(required = false) String desiredJourney,
-						 @RequestParam(required = false) String companyName,
-						 @RequestParam(required = false) String postName
- ) {
-		 return Optional
-			 .ofNullable(findCandidateUseCase.findCandidate(gender, country, city, zipCode, 
-			 skill, longitude, latitude, kilometers, availablePeriod, course, institution, 
-			  workModality, pretensionSalary, desiredJourney, companyName, postName))
-			 .map(candidate -> ResponseEntity.ok().body(candidate))
-			 .orElseGet(() -> ResponseEntity.notFound().build());
- }
+1 	//EXEMPLO DE GET PARA CANDIDATES
+2 	@GetMapping(value = "nemo/v1/candidate", produces = "application/json")
+3	public ResponseEntity<List<Candidate>> getCandidate(
+4 						 @RequestParam(required = false) String gender,
+5 						 @RequestParam(required = false) String country,
+6 						 @RequestParam(required = false) String city,
+7 						 @RequestParam(required = false) String zipCode,
+8 						 @RequestParam(required = false) String skill,
+9 						 @RequestParam(required = false) Double longitude,
+10						 @RequestParam(required = false) Double latitude,
+11						 @RequestParam(required = false) Double kilometers,
+12						 @RequestParam(required = false) String availablePeriod,
+13						 @RequestParam(required = false) String course,
+14						 @RequestParam(required = false) String institution,
+15						 @RequestParam(required = false) String workModality,
+16						 @RequestParam(required = false) Double pretensionSalary,
+17						 @RequestParam(required = false) String desiredJourney,
+18						 @RequestParam(required = false) String companyName,
+19						 @RequestParam(required = false) String postName
+20	) {
+21		 return Optional
+22			 .ofNullable(findCandidateUseCase.findCandidate(gender, country, city, zipCode, 
+23			 skill, longitude, latitude, kilometers, availablePeriod, course, institution, 
+24			  workModality, pretensionSalary, desiredJourney, companyName, postName))
+25			 .map(candidate -> ResponseEntity.ok().body(candidate))
+26			 .orElseGet(() -> ResponseEntity.notFound().build());
+27	}
  
 ```
 ```java
-//EXEMPLO PARA POST CANDIDATE
-@PostMapping("nemo/v1/candidate/")
- public ResponseEntity<Candidate> criarCandidate(@RequestBody CandidateRequest candidate) {
-	 try {
-		 return ResponseEntity.ok().body(createCandidateUseCase.createCandidate(candidate));
-	 } catch (Exception e) {
-		 e.printStackTrace();
-		 return ResponseEntity.badRequest().build();
-	 }
- }
+1  //EXEMPLO PARA POST CANDIDATE
+2  @PostMapping("nemo/v1/candidate/")
+3 public ResponseEntity<Candidate> criarCandidate(@RequestBody CandidateRequest candidate) {
+4 	 try {
+5 		 return ResponseEntity.ok().body(createCandidateUseCase.createCandidate(candidate));
+6 	 } catch (Exception e) {
+7 		 e.printStackTrace();
+8 		 return ResponseEntity.badRequest().build();
+9 	 }
+10 }
 ```
 ```java
-//EXEMPLO PARA DELETE CANDIDATE
-@DeleteMapping("nemo/v1/candidate/{id}")
- public ResponseEntity<String> deleteCandidate(@PathVariable("id") Long id) {
-		 try {
-			 deleteCandidateUseCase.deleteCandidateById(id);
-			 return ResponseEntity.ok("Candidato deletado com sucesso.");
-		 } catch (Exception e) {
-			 e.printStackTrace();
-			 return ResponseEntity.badRequest().build();
-		 }
- }
+1  //EXEMPLO PARA DELETE CANDIDATE
+2  @DeleteMapping("nemo/v1/candidate/{id}")
+3 public ResponseEntity<String> deleteCandidate(@PathVariable("id") Long id) {
+4 		 try {
+5 			 deleteCandidateUseCase.deleteCandidateById(id);
+6 			 return ResponseEntity.ok("Candidato deletado com sucesso.");
+7 		 } catch (Exception e) {
+8 			 e.printStackTrace();
+9 			 return ResponseEntity.badRequest().build();
+10		 }
+11 }
 ```
 Dificuldade: Para atingir a conclusão desta implementação, foi bem desafiador, pois não havia conhecimento necessário para trabalhar com Spring Boot e como era feito para realizar as requisições por API. Até então, tinha conhecimento apenas para trabalhar com Python/Django, então tive que me adaptar a uma nova linguagem e em como ela trabalha com o Spring Boot. 
 
 * Selects nos arquivos de Repository:
 
 ```java
-//EXEMPLO DE SELECT CRIADO NO REPOSITORY DE CANDIDATOS PARA COLETAR INFORMAÇÕES DAS TABELAS 
-//EXPERIENCES, MODALITY, PRETENCION SALARY, COMPANY NAME, JOURNEY;
-@Query("SELECT DISTINCT c FROM Candidate c " +
-			 "INNER JOIN FETCH c.experiences e " +
-			 "WHERE " +
-			 "(:gender is null or c.gender = :gender) and " +
-			 "(:country is null or c.country = :country) and " +
-			 "(:city is null or c.city = :city) and " +
-			 "(:zip_code is null or c.zipCode = :zip_code) and " +
-			 "(:availablePeriod is null or c.availablePeriod.name = :availablePeriod) and " +
-			 "(:workModality is null or c.workModality.name = :workModality) and " +
-			 "(:desiredJourney is null or c.desiredJourney.name = :desiredJourney) and " +
-			 "(:pretensionSalary is null or c.pretensionSalary <= :pretensionSalary) and " +
-			 "(:companyName is null or e.company.name = :companyName) and " +
-			 "(:postName is null or e.post.name = :postName)"
- )
- List<Candidate> findCandidateByAnyParams(
-			 @Param("gender") String gender,
-			 @Param("country") String country,
-			 @Param("city") String city,
-			 @Param("zip_code") String zipCode,
-			 @Param("availablePeriod") String availablePeriod,
-			 @Param("workModality") String workModality,
-			 @Param("pretensionSalary") Double pretensionSalary,
-			 @Param("desiredJourney") String desiredJourney,
-			 @Param("companyName") String companyName,
-			 @Param("postName") String postName
- );
+1  //EXEMPLO DE SELECT CRIADO NO REPOSITORY DE CANDIDATOS PARA COLETAR INFORMAÇÕES DAS TABELAS 
+2  //EXPERIENCES, MODALITY, PRETENCION SALARY, COMPANY NAME, JOURNEY;
+3 @Query("SELECT DISTINCT c FROM Candidate c " +
+4 			 "INNER JOIN FETCH c.experiences e " +
+5 			 "WHERE " +
+6 			 "(:gender is null or c.gender = :gender) and " +
+7 			 "(:country is null or c.country = :country) and " +
+8 			 "(:city is null or c.city = :city) and " +
+9 			 "(:zip_code is null or c.zipCode = :zip_code) and " +
+10			 "(:availablePeriod is null or c.availablePeriod.name = :availablePeriod) and " +
+11			 "(:workModality is null or c.workModality.name = :workModality) and " +
+12			 "(:desiredJourney is null or c.desiredJourney.name = :desiredJourney) and " +
+13			 "(:pretensionSalary is null or c.pretensionSalary <= :pretensionSalary) and " +
+14			 "(:companyName is null or e.company.name = :companyName) and " +
+15			 "(:postName is null or e.post.name = :postName)"
+16 )
+17 List<Candidate> findCandidateByAnyParams(
+18			 @Param("gender") String gender,
+19			 @Param("country") String country,
+20			 @Param("city") String city,
+21			 @Param("zip_code") String zipCode,
+22			 @Param("availablePeriod") String availablePeriod,
+23			 @Param("workModality") String workModality,
+24			 @Param("pretensionSalary") Double pretensionSalary,
+25			 @Param("desiredJourney") String desiredJourney,
+26			 @Param("companyName") String companyName,
+27			 @Param("postName") String postName
+28 );
 ```
 
 ```java
-//EXEMPLO DE SELECT REALIZANDO UM JOIN NA TABELA DE SKILLS PARA TRAZER AS SKILLS DO CANCIDATO
-//SELECIONADO
-Query("SELECT c FROM Candidate c " +
-		 "INNER JOIN FETCH c.skills s " +
-		 "INNER JOIN FETCH s.skill sk " +
-		 "WHERE " +
-		 "(id in :ids) and " +
-		 "(sk.description = :skill) "
-	 )
- List<Candidate> findCandidateBySkillAndId(
-		 @Param("ids") List<Long> ids,
-		 @Param("skill") String skill
- );
+1  //EXEMPLO DE SELECT REALIZANDO UM JOIN NA TABELA DE SKILLS PARA TRAZER AS SKILLS DO CANDIDATO SELECIONADO
+2
+3 Query("SELECT c FROM Candidate c " +
+4 		 "INNER JOIN FETCH c.skills s " +
+5 		 "INNER JOIN FETCH s.skill sk " +
+6 		 "WHERE " +
+7 		 "(id in :ids) and " +
+8 		 "(sk.description = :skill) "
+9 	 )
+10 List<Candidate> findCandidateBySkillAndId(
+11		 @Param("ids") List<Long> ids,
+12		 @Param("skill") String skill
+13 );
+
 ```
 
 * Criação de tabelas no arquivo DDL.SQL para a criação do banco de dados utilizando Liquibase:
