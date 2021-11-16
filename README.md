@@ -154,6 +154,82 @@ Query("SELECT c FROM Candidate c " +
  );
 ```
 
+* Criação de tabelas no arquivo .SQL para a criação do banco de dados utilizando Liquibase:
+	
+```sql		
+1  /* Table 'skill' */
+2  CREATE TABLE "skill" (
+3 skill_id serial,
+4  description varchar(20) NOT NULL UNIQUE,
+5  PRIMARY KEY(skill_id));
+6  
+7  
+8  /* Enum 'skill_level' */
+9  CREATE TYPE skill_level
+10 AS ENUM('ONE','TWO','THREE','FOUR','FIVE');
+11 
+12 /* Enum 'candidate_skill' */
+13 CREATE TABLE "candidate_skill" (
+14 fk_can_id serial,
+15 fk_skill_id serial,
+16 skill_level skill_level NOT null,
+17 PRIMARY KEY(fk_can_id, fk_skill_id),
+18 CONSTRAINT fk_can_id_cs FOREIGN KEY(fk_can_id) REFERENCES "candidate"(can_id),
+19 CONSTRAINT fk_skill_id_cs FOREIGN KEY(fk_skill_id) REFERENCES "skill"(skill_id)
+20 );
+21 
+22 /* Table 'company' */
+23 CREATE TABLE "company" (
+24 company_id serial NOT NULL,
+25 com_name varchar(30) UNIQUE NOT NULL,
+26 PRIMARY KEY(company_id));
+27 
+28 /* Table 'post' */
+29 CREATE TABLE "post" (
+30 post_id serial NOT NULL,
+31 post_name varchar(30) UNIQUE NOT NULL,
+32 PRIMARY KEY(post_id));
+33 
+34 /* Table 'candidate_exp' */
+35 CREATE TABLE "candidate_exp" (
+36 fk_can_id serial NOT NULL,
+37 fk_company_id serial NOT NULL,
+38 fk_post_id serial NOT NULL,
+39 dt_start date NOT NULL,
+40 dt_end date,
+41 description text NOT NULL,
+42 PRIMARY KEY(fk_can_id,fk_company_id,fk_post_id),
+43 CONSTRAINT fk_can_id_ce FOREIGN KEY(fk_can_id) REFERENCES "candidate"(can_id),
+44 CONSTRAINT fk_company_id FOREIGN KEY(fk_company_id) REFERENCES "company"(company_id),
+45 CONSTRAINT fk_post_id FOREIGN KEY(fk_post_id) REFERENCES "post"(post_id));
+46 
+47 
+48 /* Table 'institution' */
+49 CREATE TABLE "institution" (
+50 inst_id serial NOT NULL,
+51 inst_name varchar(30) UNIQUE NOT NULL,
+52 PRIMARY KEY(inst_id));
+53 
+54 /* Table 'course' */
+55 CREATE TABLE "course" (
+56 course_id serial NOT NULL,
+57 course_name varchar(30) UNIQUE NOT NULL,
+58 PRIMARY KEY(course_id));
+59 
+60 /* Table 'candidate_formation' */
+61 CREATE TABLE "candidate_formation" (
+62 fk_can_id serial NOT NULL,
+63 fk_inst_id serial NOT NULL,
+64 fk_course_id serial NOT NULL,
+65 dt_start date NOT NULL,
+66 dt_end date NOT NULL,
+67 PRIMARY KEY(fk_can_id,fk_inst_id,fk_course_id),
+68 CONSTRAINT fk_can_id_cf FOREIGN KEY(fk_can_id) REFERENCES "candidate"(can_id),
+69 CONSTRAINT fk_inst_id FOREIGN KEY(fk_inst_id) REFERENCES "institution"(inst_id),
+70 CONSTRAINT fk_course_id FOREIGN KEY(fk_co
+
+```
+
 * Auxilio na idealização do projeto:
 
 	*	Ao participar das reuniões com o cliente, tivemos uma reunião de grupo, onde definimos estratégias de tarefas e cronogramas de entrega. Com isso, participei junto à equipe destas decisões, focando no plano de negócio do cliente e qual a necessidade do mesmo.
@@ -181,48 +257,48 @@ Foi configurado o CI/CD da aplicação, onde foi criado um Pipeline de Build; Te
 Arquivo .gitlab-ci.yml:
 
 ```yml
-image: docker:latest
-services:
-	 - docker:dind
-variables:
-	 DOCKER_DRIVER: overlay
-	 SPRING_PROFILES_ACTIVE: gitlab-ci
-	 REPOSITORY: pi-1sem-2021
-	 NAME_PROJECT: nemo
-	 REGISTRY: registry.gitlab.com/pi-1sem-2021
-	 MAVEN_CLI_OPTS: "--batch-mode  --errors  --fail-at-end"
-	 MAVEN_OPTS: "-Dhttps.protocols=TLSv1.2  -Dmaven.repo.local=.m2/pi-1sem-2021"
-	 DOCKER_TLS_CERTDIR: ""
-before_script:
-	 - echo "-- Iniciando Comandos CI/CD"
-	 - apt-get update -qy
-	 - apt-get install -y ruby-dev
-	 - gem install dpl
-stages:
-	 - build
-	 - test
-	 - deploy 
-maven-build:
-	 image: maven:3-jdk-11
-	 stage: build
-	 script: "mvn  -f  pom.xml  compile"
-	 artifacts:
-	 name: $NAME_PROJECT
-	 paths:
-	 - teste_nemo.jar
-maven-testes:
-	 image: maven:3-jdk-11
-	 stage: test 
-	 before_script:
-	 - echo "Iniciando Testes da Aplicação"
-	 script: 
-	 - 'mvn  -f  pom.xml  $MAVEN_CLI_OPTS  install'
-	 
-production:
-	 stage: deploy
-	 image: maven:3-jdk-11
-	 script:
-	 - dpl --provider=heroku --app=$HEROKU_APP_PRODUCTION --api-key=$HEROKU_API_KEY
+1  image: docker:latest
+2  services:
+3 	 - docker:dind
+4  variables:
+5  	 DOCKER_DRIVER: overlay
+6  	 SPRING_PROFILES_ACTIVE: gitlab-ci
+7  	 REPOSITORY: pi-1sem-2021
+8  	 NAME_PROJECT: nemo
+9  	 REGISTRY: registry.gitlab.com/pi-1sem-2021
+10 	 MAVEN_CLI_OPTS: "--batch-mode  --errors  --fail-at-end"
+11 	 MAVEN_OPTS: "-Dhttps.protocols=TLSv1.2  -Dmaven.repo.local=.m2/pi-1sem-2021"
+12 	 DOCKER_TLS_CERTDIR: ""
+13 before_script:
+14 	 - echo "-- Iniciando Comandos CI/CD"
+15 	 - apt-get update -qy
+16 	 - apt-get install -y ruby-dev
+17 	 - gem install dpl
+18 stages:
+19 	 - build
+20 	 - test
+21 	 - deploy 
+22 maven-build:
+23 	 image: maven:3-jdk-11
+24 	 stage: build
+25 	 script: "mvn  -f  pom.xml  compile"
+26 	 artifacts:
+27 	 name: $NAME_PROJECT
+28 	 paths:
+29 	 - teste_nemo.jar
+30 maven-testes:
+31 	 image: maven:3-jdk-11
+32 	 stage: test 
+33 	 before_script:
+34 	 - echo "Iniciando Testes da Aplicação"
+35 	 script: 
+36 	 - 'mvn  -f  pom.xml  $MAVEN_CLI_OPTS  install'
+37 	 
+38 production:
+39 	 stage: deploy
+40 	 image: maven:3-jdk-11
+41 	 script:
+42 	 - dpl --provider=heroku --app=$HEROKU_APP_PRODUCTION --api-key=$HEROKU_API_KEY
 ```
 
 ## <b>🧠 Aprendizados Efetivos</b>
