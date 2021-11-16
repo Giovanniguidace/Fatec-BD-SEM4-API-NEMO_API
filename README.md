@@ -154,7 +154,7 @@ Query("SELECT c FROM Candidate c " +
  );
 ```
 
-* Criação de tabelas no arquivo .SQL para a criação do banco de dados utilizando Liquibase:
+* Criação de tabelas no arquivo DDL.SQL para a criação do banco de dados utilizando Liquibase:
 	
 ```sql		
 1  /* Table 'skill' */
@@ -240,7 +240,7 @@ Query("SELECT c FROM Candidate c " +
 
 	*	Para que fosse possível realizar a hospedagem em nuvem, contratamos um servidor gratuito em nuvem(AWS), e hospedamos nossa aplicação. Realizei a instalação do PostgreSQL, Firewall no Ubuntu com iptables, configurei acesso SSH, e realizei a liberação de portas 80(HTTP) e 443(HTTPS).
 
-O Proxy Reverso utilizado foi o NGINX, onde foi apontado para o serviço nemo.service, fazendo com que ao acessar a aplicação, o NGINX já apontasse para o serviço Nemo em execução.
+Utilizamos o NGINX como proxy reverso, onde foi apontado para o serviço nemo.service, tornando possível o acesso à API através da Nuvem(Internet).
 
 ![](https://gitlab.com/felipemessibraga/pi-1sem-2021/-/wikis/uploads/0ace901e33fb1baf95eba56665a19b9a/Design_sem_nome.gif)
 
